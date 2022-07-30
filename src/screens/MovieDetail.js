@@ -1,23 +1,31 @@
 import { StyleSheet, Text, View, Button, Image } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { windowWidth, windowHeight } from "../utils/dimensions";
 
 const MovieDetail = ({ route, navigation }) => {
-  const { title } = route.params;
+  const { movieData } = route.params;
+
+  useEffect(() => {
+    (() => {
+      navigation.setOptions({ title: movieData.title });
+    })();
+  }, [movieData.title]);
+
   return (
     <View>
       <View style={styles.imageContainer}>
         <Image
           style={styles.img}
           source={{
-            uri: "https://image.tmdb.org/t/p/w500" + title.poster_path || [],
+            uri:
+              "https://image.tmdb.org/t/p/w500" + movieData.poster_path || [],
           }}
         />
       </View>
 
-      <Text style={styles.title}>{title.title}</Text>
+      <Text style={styles.title}>{movieData.title}</Text>
 
-      <Text style={styles.subtitle}>{title.overview}</Text>
+      <Text style={styles.subtitle}>{movieData.overview}</Text>
       <View style={styles.btnContainer}>
         <Button
           title="Watch Now"
