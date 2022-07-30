@@ -10,7 +10,7 @@ const SliderImage = ({ data }) => {
     <View>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("SingleMovie", {
+          navigation.navigate("MovieDetail", {
             title: data,
           })
         }

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
-import SingleMovie from "../screens/SingleMovie";
+import MovieDetail from "../screens/MovieDetail";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -28,8 +28,8 @@ const TabNavigator = () => {
         })}
       />
       <Tab.Screen
-        name="Single Movie"
-        component={SingleMovie}
+        name="Movie Detail"
+        component={MovieDetail}
         options={({ route }) => ({
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="search" color={color} size={size} />

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Button, Image } from "react-native";
 import React from "react";
 import { windowWidth, windowHeight } from "../utils/dimensions";
 
-const SingleMovie = ({ route, navigation }) => {
+const MovieDetail = ({ route, navigation }) => {
   const { title } = route.params;
   return (
     <View>
@@ -22,14 +22,14 @@ const SingleMovie = ({ route, navigation }) => {
         <Button
           title="Watch Now"
           onPress={() => console.log("Pressed")}
-          color="tomato"
+          color="red"
         />
       </View>
     </View>
   );
 };
 
-export default SingleMovie;
+export default MovieDetail;
 
 const styles = StyleSheet.create({
   imageContainer: {
