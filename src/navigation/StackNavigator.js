@@ -19,11 +19,7 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: true }}>
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen
-        name="MovieDetail"
-        component={MovieDetail}
-        options={({ route }) => ({ title: "hola" })}
-      />
+      <Stack.Screen name="MovieDetail" component={MovieDetail} />
     </Stack.Navigator>
   );
 };
