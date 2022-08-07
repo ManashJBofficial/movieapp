@@ -16,7 +16,16 @@ const Home = ({ navigation }) => {
     movies: { isLoading, movies },
   } = movieDetails;
 
+  // Subscribe
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    console.log("Connection type", state.type);
+    console.log("Is connected?", state.isConnected);
+    if (state.isConnected !== true) {
+      navigation.navigate("NoConnectionScreen");
+    }
+  });
   useEffect(() => {
+    unsubscribe();
     dispatch(getApidata());
   }, [dispatch]);
 
