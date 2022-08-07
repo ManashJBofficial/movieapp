@@ -1,39 +1,85 @@
-import { StyleSheet, Text, View, Button, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import React, { useEffect } from "react";
 import { windowWidth, windowHeight } from "../utils/dimensions";
+import YoutubePlayer from "react-native-youtube-iframe";
+import { useDispatch, useSelector } from "react-redux";
+import { getTrailerdata } from "../redux/action/trailerAction";
 
 const MovieDetail = ({ route, navigation }) => {
   const { movieData } = route.params;
+
+  const dispatch = useDispatch();
+
+  const trailerDetails = useSelector((state) => state.rootReducer.trailers);
+  const {
+    isLoading,
+    trailer: { results },
+  } = trailerDetails;
+
+  if (isLoading === false) {
+    var trailerObject = results.find(
+      (list) => list.name === "Official Trailer"
+    );
+    var trailerId = trailerObject?.key;
+  }
 
   useEffect(() => {
     (() => {
       navigation.setOptions({ title: movieData.title });
     })();
-  }, [movieData.title]);
+
+    dispatch(getTrailerdata(movieData.id));
+  }, [dispatch]);
 
   return (
-    <View>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.img}
-          source={{
-            uri:
-              "https://image.tmdb.org/t/p/w500" + movieData.poster_path || [],
-          }}
-        />
-      </View>
+    <ScrollView>
+      <View>
+        {/* <View style={styles.imageContainer}>
+          <Image
+            style={styles.img}
+            source={{
+              uri:
+                "https://image.tmdb.org/t/p/w500" + movieData.poster_path || [],
+            }}
+          />
+        </View> */}
+        <View style={styles.imageContainer}>
+          <ImageBackground
+            source={{
+              uri:
+                "https://image.tmdb.org/t/p/w500" + movieData.poster_path || [],
+            }}
+            resizeMode="cover"
+            style={styles.img}
+          >
+            <YoutubePlayer height={221} play={false} videoId={trailerId} />
+          </ImageBackground>
+        </View>
+        <Text style={styles.title}>{movieData.title}</Text>
+        <Text style={styles.subtitle}>
+          {movieData.release_date.split("-")[0]} |{" "}
+          {movieData.media_type.charAt(0).toUpperCase() +
+            movieData.media_type.slice(1)}{" "}
+          | {Math.round(movieData.vote_average * 10) / 10}
+        </Text>
 
-      <Text style={styles.title}>{movieData.title}</Text>
-
-      <Text style={styles.subtitle}>{movieData.overview}</Text>
-      <View style={styles.btnContainer}>
-        <Button
-          title="Watch Now"
-          onPress={() => console.log("Pressed")}
-          color="red"
-        />
+        <Text style={styles.subtitle}>{movieData.overview}</Text>
+        <View style={styles.btnContainer}>
+          <Button
+            title="Watch Now"
+            onPress={() => console.log("Pressed")}
+            color="red"
+          />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -42,7 +88,7 @@ export default MovieDetail;
 const styles = StyleSheet.create({
   imageContainer: {
     width: windowWidth,
-    height: windowHeight - 500,
+    height: windowHeight - 570,
     backgroundColor: "yellow",
     marginBottom: 5,
   },

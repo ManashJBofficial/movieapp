@@ -4,11 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import Carousel from "react-native-snap-carousel";
 import { windowWidth } from "../utils/dimensions";
-import {
-  MOVIE_FETCH_REQUEST,
-  MOVIE_FETCH_SUCCESS,
-  MOVIE_FETCH_FAILED,
-} from "../utils/constant";
+import { getApidata } from "../redux/action/movieAction";
 import SliderImage from "../components/SliderImage";
 
 const Home = ({ navigation }) => {
@@ -21,7 +17,7 @@ const Home = ({ navigation }) => {
   } = movieDetails;
 
   useEffect(() => {
-    dispatch({ type: MOVIE_FETCH_REQUEST });
+    dispatch(getApidata());
   }, [dispatch]);
 
   const renderImage = ({ item, index }) => {
@@ -29,7 +25,7 @@ const Home = ({ navigation }) => {
   };
   // const isCarousel = React.useRef(null);
 
-  console.log(movies?.results);
+  // console.log(movies?.results);
   return (
     <View style={styles.container}>
       <Text style={styles.textStyle}>Trending Movies</Text>

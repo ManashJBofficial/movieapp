@@ -4,14 +4,12 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { store } from "./src/redux/store";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
-import TabNavigator from "./src/navigation/TabNavigator";
 import StackNavigator from "./src/navigation/StackNavigator";
 
 export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {/* <TabNavigator /> */}
         <StackNavigator />
       </NavigationContainer>
     </Provider>
