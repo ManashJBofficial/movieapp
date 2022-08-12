@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 import { windowWidth, windowHeight } from "../utils/dimensions";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useDispatch, useSelector } from "react-redux";
-import { getTrailerdata } from "../redux/action/trailerAction";
+import { resetTrailerId, getTrailerdata } from "../redux/action/trailerAction";
 
 const MovieDetail = ({ route, navigation }) => {
   const { movieData } = route.params;
@@ -18,17 +18,7 @@ const MovieDetail = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
   const trailerDetails = useSelector((state) => state.rootReducer.trailers);
-  const {
-    isLoading,
-    trailer: { results },
-  } = trailerDetails;
-
-  if (isLoading === false) {
-    var trailerObject = results.find(
-      (list) => list.name === "Official Trailer"
-    );
-    var trailerId = trailerObject?.key;
-  }
+  const { trailer } = trailerDetails;
 
   useEffect(() => {
     (() => {
@@ -36,20 +26,14 @@ const MovieDetail = ({ route, navigation }) => {
     })();
 
     dispatch(getTrailerdata(movieData.id));
+    return () => {
+      dispatch(resetTrailerId());
+    };
   }, [dispatch]);
 
   return (
     <ScrollView>
       <View>
-        {/* <View style={styles.imageContainer}>
-          <Image
-            style={styles.img}
-            source={{
-              uri:
-                "https://image.tmdb.org/t/p/w500" + movieData.poster_path || [],
-            }}
-          />
-        </View> */}
         <View style={styles.imageContainer}>
           <ImageBackground
             source={{
@@ -59,7 +43,11 @@ const MovieDetail = ({ route, navigation }) => {
             resizeMode="cover"
             style={styles.img}
           >
-            <YoutubePlayer height={221} play={false} videoId={trailerId} />
+            {trailer === undefined ? (
+              <></>
+            ) : (
+              <YoutubePlayer height={221} play={true} videoId={trailer} />
+            )}
           </ImageBackground>
         </View>
         <Text style={styles.title}>{movieData.title}</Text>

@@ -6,6 +6,10 @@ import {
   TRAILER_FETCH_RESET,
 } from "../../utils/constant";
 
+export const resetTrailerId = () => async (dispatch) => {
+  dispatch({ type: TRAILER_FETCH_RESET });
+};
+
 export const getTrailerdata = (movieId) => async (dispatch) => {
   try {
     dispatch({ type: TRAILER_FETCH_REQUEST });
@@ -17,9 +21,14 @@ export const getTrailerdata = (movieId) => async (dispatch) => {
       }
     );
 
+    var trailerObject = data.results.find(
+      (list) => list.name === "Official Trailer"
+    );
+    var trailerId = trailerObject?.key;
+
     dispatch({
       type: TRAILER_FETCH_SUCCESS,
-      payload: data,
+      payload: trailerId,
     });
   } catch (error) {
     dispatch({
