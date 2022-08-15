@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   ImageBackground,
   ScrollView,
 } from "react-native";
@@ -11,6 +10,8 @@ import { windowWidth, windowHeight } from "../utils/dimensions";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useDispatch, useSelector } from "react-redux";
 import { resetTrailerId, getTrailerdata } from "../redux/action/trailerAction";
+import { getPlaydata } from "../redux/action/playAction";
+import { Chip, Button } from "react-native-paper";
 
 const MovieDetail = ({ route, navigation }) => {
   const { movieData } = route.params;
@@ -20,12 +21,28 @@ const MovieDetail = ({ route, navigation }) => {
   const trailerDetails = useSelector((state) => state.rootReducer.trailers);
   const { trailer } = trailerDetails;
 
+  // console.log("movieData", movieData.genre_ids);
+
+  const playDetails = useSelector((state) => state.rootReducer.playData);
+  const { isLoading, play } = playDetails;
+  var gen;
+  var gen2;
+  const getGenres = () => {
+    var res = play.genres.filter((ele) => movieData.genre_ids.includes(ele.id));
+    return res;
+  };
+  if (isLoading === false) {
+    gen = getGenres();
+    // gen2 = gen.map(({ id, ...rest }) => rest);
+  }
   useEffect(() => {
     (() => {
       navigation.setOptions({ title: movieData.title });
     })();
 
     dispatch(getTrailerdata(movieData.id));
+    dispatch(getPlaydata());
+
     return () => {
       dispatch(resetTrailerId());
     };
@@ -46,7 +63,7 @@ const MovieDetail = ({ route, navigation }) => {
             {trailer === undefined ? (
               <></>
             ) : (
-              <YoutubePlayer height={221} play={true} videoId={trailer} />
+              <YoutubePlayer height={221} play={false} videoId={trailer} />
             )}
           </ImageBackground>
         </View>
@@ -57,14 +74,32 @@ const MovieDetail = ({ route, navigation }) => {
             movieData.media_type.slice(1)}{" "}
           | {Math.round(movieData.vote_average * 10) / 10}
         </Text>
+        <Text style={styles.subtitle}>
+          {isLoading === false
+            ? gen.map((ele) => (
+                <View key={ele.id}>
+                  <Chip
+                    style={{ marginRight: 5, marginBottom: 3 }}
+                    onPress={() => console.log("Pressed")}
+                  >
+                    {ele.name}
+                  </Chip>
+                </View>
+              ))
+            : null}
+        </Text>
 
         <Text style={styles.subtitle}>{movieData.overview}</Text>
         <View style={styles.btnContainer}>
           <Button
-            title="Watch Now"
-            onPress={() => console.log("Pressed")}
+            mode="contained"
+            onPress={() => {
+              navigation.navigate("PlayScreen", { movieId: movieData.id });
+            }}
             color="red"
-          />
+          >
+            Watch Now
+          </Button>
         </View>
       </View>
     </ScrollView>
@@ -109,5 +144,10 @@ const styles = StyleSheet.create({
   // },
   btnContainer: {
     padding: 10,
+  },
+  tag: {
+    borderRadius: 3,
+    borderColor: "red",
+    borderWidth: 2,
   },
 });
