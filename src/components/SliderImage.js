@@ -30,9 +30,9 @@ export default SliderImage;
 
 const styles = StyleSheet.create({
   imgStyle: {
-    height: 150,
+    height: 200,
     width: 300,
     borderRadius: 10,
-    resizeMode: "cover",
+    resizeMode: "stretch",
   },
 });

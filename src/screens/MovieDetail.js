@@ -9,24 +9,30 @@ import React, { useEffect } from "react";
 import { windowWidth, windowHeight } from "../utils/dimensions";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useDispatch, useSelector } from "react-redux";
-import { resetTrailerId, getTrailerdata } from "../redux/action/trailerAction";
+import {
+  resetTrailerId,
+  resetTvTrailerId,
+  getTrailerdata,
+  getTvTrailerdata,
+} from "../redux/action/trailerAction";
 import { getPlaydata } from "../redux/action/playAction";
 import { Chip, Button } from "react-native-paper";
+import Icon from "react-native-vector-icons/Foundation";
 
 const MovieDetail = ({ route, navigation }) => {
   const { movieData } = route.params;
-
   const dispatch = useDispatch();
 
   const trailerDetails = useSelector((state) => state.rootReducer.trailers);
   const { trailer } = trailerDetails;
 
-  // console.log("movieData", movieData.genre_ids);
+  const tvTrailerDetails = useSelector((state) => state.rootReducer.tvTrailers);
+  const { tvTrailer } = tvTrailerDetails;
 
   const playDetails = useSelector((state) => state.rootReducer.playData);
   const { isLoading, play } = playDetails;
+
   var gen;
-  var gen2;
   const getGenres = () => {
     var res = play.genres.filter((ele) => movieData.genre_ids.includes(ele.id));
     return res;
@@ -36,15 +42,15 @@ const MovieDetail = ({ route, navigation }) => {
     // gen2 = gen.map(({ id, ...rest }) => rest);
   }
   useEffect(() => {
-    (() => {
-      navigation.setOptions({ title: movieData.title });
-    })();
-
-    dispatch(getTrailerdata(movieData.id));
+    movieData.media_type === "movie"
+      ? navigation.setOptions({ title: movieData.title })
+      : navigation.setOptions({ title: movieData.name });
     dispatch(getPlaydata());
-
+    dispatch(getTrailerdata(movieData.id));
+    dispatch(getTvTrailerdata(movieData.id));
     return () => {
       dispatch(resetTrailerId());
+      dispatch(resetTvTrailerId());
     };
   }, [dispatch]);
 
@@ -60,19 +66,36 @@ const MovieDetail = ({ route, navigation }) => {
             resizeMode="cover"
             style={styles.img}
           >
-            {trailer === undefined ? (
+            {movieData.media_type === "movie" ? (
+              trailer === undefined ? (
+                <></>
+              ) : (
+                <YoutubePlayer height={221} play={false} videoId={trailer} />
+              )
+            ) : tvTrailer === undefined ? (
               <></>
             ) : (
-              <YoutubePlayer height={221} play={false} videoId={trailer} />
+              <YoutubePlayer height={221} play={false} videoId={tvTrailer} />
             )}
           </ImageBackground>
         </View>
-        <Text style={styles.title}>{movieData.title}</Text>
+        <Text style={styles.title}>
+          {movieData.media_type === "movie" ? movieData.title : movieData.name}
+        </Text>
         <Text style={styles.subtitle}>
-          {movieData.release_date.split("-")[0]} |{" "}
-          {movieData.media_type.charAt(0).toUpperCase() +
-            movieData.media_type.slice(1)}{" "}
-          | {Math.round(movieData.vote_average * 10) / 10}
+          {movieData.media_type === "movie"
+            ? movieData.release_date.split("-")[0] +
+              " | " +
+              movieData.media_type.charAt(0).toUpperCase() +
+              movieData.media_type.slice(1) +
+              " | " +
+              Math.round(movieData.vote_average * 10) / 10
+            : movieData.first_air_date.split("-")[0] +
+              " | " +
+              movieData.media_type.charAt(0).toUpperCase() +
+              movieData.media_type.slice(1) +
+              " | " +
+              Math.round(movieData.vote_average * 10) / 10}
         </Text>
         <Text style={styles.subtitle}>
           {isLoading === false
@@ -92,11 +115,12 @@ const MovieDetail = ({ route, navigation }) => {
         <Text style={styles.subtitle}>{movieData.overview}</Text>
         <View style={styles.btnContainer}>
           <Button
+            icon="play-circle"
             mode="contained"
             onPress={() => {
               navigation.navigate("PlayScreen", { movieId: movieData.id });
             }}
-            color="red"
+            color="tomato"
           >
             Watch Now
           </Button>

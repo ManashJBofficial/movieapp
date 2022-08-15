@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import Carousel from "react-native-snap-carousel";
 import { windowWidth } from "../utils/dimensions";
 import { getApidata } from "../redux/action/movieAction";
+import { getSeriesdata } from "../redux/action/seriesAction";
 import SliderImage from "../components/SliderImage";
 
 const Home = ({ navigation }) => {
@@ -14,6 +15,7 @@ const Home = ({ navigation }) => {
 
   const {
     movies: { isLoading, movies },
+    series: { isSeriesLoading, series },
   } = movieDetails;
 
   // Subscribe
@@ -27,6 +29,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     unsubscribe();
     dispatch(getApidata());
+    dispatch(getSeriesdata());
   }, [dispatch]);
 
   const renderImage = ({ item, index }) => {
@@ -34,23 +37,41 @@ const Home = ({ navigation }) => {
   };
   // const isCarousel = React.useRef(null);
 
-  // console.log(movies?.results);
   return (
-    <View style={styles.container}>
-      <Text style={styles.textStyle}>Trending Movies</Text>
-      {movies?.results == undefined ? (
-        <Text>Loading...</Text>
-      ) : (
-        <Carousel
-          // ref={isCarousel}
-          data={movies?.results}
-          renderItem={renderImage}
-          sliderWidth={windowWidth - 10}
-          itemWidth={300}
-          loop={true}
-        />
-      )}
-    </View>
+    <ScrollView>
+      <View>
+        <View>
+          <Text style={styles.headText}>Trending Movies</Text>
+          {movies?.results == undefined ? (
+            <Text>Loading...</Text>
+          ) : (
+            <Carousel
+              // ref={isCarousel}
+              data={movies?.results}
+              renderItem={renderImage}
+              sliderWidth={windowWidth - 10}
+              itemWidth={300}
+              loop={true}
+            />
+          )}
+        </View>
+        <View>
+          <Text style={styles.headText}>Trending Series</Text>
+          {series?.results == undefined ? (
+            <Text>Loading...</Text>
+          ) : (
+            <Carousel
+              // ref={isCarousel}
+              data={series?.results}
+              renderItem={renderImage}
+              sliderWidth={windowWidth - 10}
+              itemWidth={300}
+              loop={true}
+            />
+          )}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -62,7 +83,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  textStyle: {
-    flex: 1,
+  headText: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 15,
+    fontSize: 24,
+    fontWeight: "bold",
   },
 });
