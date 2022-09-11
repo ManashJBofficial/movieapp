@@ -3,6 +3,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/Home";
 import MovieDetail from "../screens/MovieDetail";
+import SeriesDetail from "../screens/SeriesDetail";
 import PlayScreen from "../screens/PlayScreen";
 import NoConnectionScreen from "../screens/NoConnectionScreen";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ const StackNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: true }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="MovieDetail" component={MovieDetail} />
+      <Stack.Screen name="SeriesDetail" component={SeriesDetail} />
       <Stack.Screen name="PlayScreen" component={PlayScreen} />
       <Stack.Screen name="NoConnectionScreen" component={NoConnectionScreen} />
     </Stack.Navigator>

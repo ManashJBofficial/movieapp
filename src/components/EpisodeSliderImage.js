@@ -3,22 +3,12 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const SliderImage = ({ data }) => {
+const EpisodeSliderImage = ({ data }) => {
   const navigation = useNavigation();
 
   return (
     <View>
-      <TouchableOpacity
-        onPress={() =>
-          data.media_type === "movie"
-            ? navigation.navigate("MovieDetail", {
-                movieData: data,
-              })
-            : navigation.navigate("SeriesDetail", {
-                seriesData: data,
-              })
-        }
-      >
+      <TouchableOpacity>
         <Image
           source={{
             uri: "https://image.tmdb.org/t/p/w500" + data.poster_path || [],
@@ -30,7 +20,7 @@ const SliderImage = ({ data }) => {
   );
 };
 
-export default SliderImage;
+export default EpisodeSliderImage;
 
 const styles = StyleSheet.create({
   imgStyle: {

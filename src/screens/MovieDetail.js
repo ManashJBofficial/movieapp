@@ -4,6 +4,7 @@ import {
   View,
   ImageBackground,
   ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useEffect } from "react";
 import { windowWidth, windowHeight } from "../utils/dimensions";
@@ -16,11 +17,13 @@ import {
   getTvTrailerdata,
 } from "../redux/action/trailerAction";
 import { getPlaydata } from "../redux/action/playAction";
+import { getSeriesDetail } from "../redux/action/seriesDetailAction";
 import { Chip, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/Foundation";
 
 const MovieDetail = ({ route, navigation }) => {
   const { movieData } = route.params;
+  console.log("data==", movieData.id);
   const dispatch = useDispatch();
 
   const trailerDetails = useSelector((state) => state.rootReducer.trailers);
@@ -31,7 +34,6 @@ const MovieDetail = ({ route, navigation }) => {
 
   const playDetails = useSelector((state) => state.rootReducer.playData);
   const { isLoading, play } = playDetails;
-
   var gen;
   const getGenres = () => {
     var res = play.genres.filter((ele) => movieData.genre_ids.includes(ele.id));
@@ -39,15 +41,14 @@ const MovieDetail = ({ route, navigation }) => {
   };
   if (isLoading === false) {
     gen = getGenres();
-    // gen2 = gen.map(({ id, ...rest }) => rest);
   }
   useEffect(() => {
-    movieData.media_type === "movie"
-      ? navigation.setOptions({ title: movieData.title })
-      : navigation.setOptions({ title: movieData.name });
+    navigation.setOptions({ title: movieData.title });
+
     dispatch(getPlaydata());
     dispatch(getTrailerdata(movieData.id));
     dispatch(getTvTrailerdata(movieData.id));
+    dispatch(getSeriesDetail(movieData.id));
     return () => {
       dispatch(resetTrailerId());
       dispatch(resetTvTrailerId());
@@ -66,36 +67,21 @@ const MovieDetail = ({ route, navigation }) => {
             resizeMode="cover"
             style={styles.img}
           >
-            {movieData.media_type === "movie" ? (
-              trailer === undefined ? (
-                <></>
-              ) : (
-                <YoutubePlayer height={221} play={false} videoId={trailer} />
-              )
-            ) : tvTrailer === undefined ? (
+            {trailer === undefined ? (
               <></>
             ) : (
-              <YoutubePlayer height={221} play={false} videoId={tvTrailer} />
+              <YoutubePlayer height={221} play={false} videoId={trailer} />
             )}
           </ImageBackground>
         </View>
-        <Text style={styles.title}>
-          {movieData.media_type === "movie" ? movieData.title : movieData.name}
-        </Text>
+        <Text style={styles.title}>{movieData.title}</Text>
         <Text style={styles.subtitle}>
-          {movieData.media_type === "movie"
-            ? movieData.release_date.split("-")[0] +
-              " | " +
-              movieData.media_type.charAt(0).toUpperCase() +
-              movieData.media_type.slice(1) +
-              " | " +
-              Math.round(movieData.vote_average * 10) / 10
-            : movieData.first_air_date.split("-")[0] +
-              " | " +
-              movieData.media_type.charAt(0).toUpperCase() +
-              movieData.media_type.slice(1) +
-              " | " +
-              Math.round(movieData.vote_average * 10) / 10}
+          {movieData.release_date.split("-")[0] +
+            " | " +
+            movieData.media_type.charAt(0).toUpperCase() +
+            movieData.media_type.slice(1) +
+            " | " +
+            Math.round(movieData.vote_average * 10) / 10}
         </Text>
         <Text style={styles.subtitle}>
           {isLoading === false

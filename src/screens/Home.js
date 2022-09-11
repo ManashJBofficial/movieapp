@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import Carousel from "react-native-snap-carousel";
