@@ -5,6 +5,7 @@ import fetchSeriesReducer from "./seriesReducer";
 import fetchTrailerReducer from "./trailerReducer";
 import fetchTvTrailerReducer from "./seriesTrailerReducer";
 import fetchSeriesDetailsReducer from "./seriesDetailReducer";
+import fetchEpisodeDetailsReducer from "./episodeDetailReducer";
 
 const rootReducer = combineReducers({
   movies: fetchMovieReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   series: fetchSeriesReducer,
   tvTrailers: fetchTvTrailerReducer,
   seriesDetail: fetchSeriesDetailsReducer,
+  episodeDetail: fetchEpisodeDetailsReducer,
 });
 
 export default rootReducer;

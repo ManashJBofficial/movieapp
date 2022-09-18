@@ -19,6 +19,7 @@ import {
 } from "../redux/action/trailerAction";
 import { getPlaydata } from "../redux/action/playAction";
 import { getSeriesDetail } from "../redux/action/seriesDetailAction";
+import { getEpisodeDetail } from "../redux/action/episodeDetailAction";
 import { Chip, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/Foundation";
 import Carousel from "react-native-snap-carousel";
@@ -27,7 +28,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 const SeriesDetail = ({ route, navigation }) => {
   const { seriesData } = route.params;
-  console.log("data==", seriesData.id);
+  // console.log("data==", seriesData.id);
   const dispatch = useDispatch();
 
   const trailerDetails = useSelector((state) => state.rootReducer.trailers);
@@ -46,6 +47,14 @@ const SeriesDetail = ({ route, navigation }) => {
   } = seriesDetails;
   // console.log(number_of_seasons);
   // console.log(seasons);
+
+  const epDetails = useSelector((state) => state.rootReducer.episodeDetail);
+
+  const {
+    isEpDetailLoading,
+    singleEpisodeDetail: { episodes },
+  } = epDetails;
+  // console.log("epDetails", episodes);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(1);
   const [items, setItems] = useState([]);
@@ -62,7 +71,7 @@ const SeriesDetail = ({ route, navigation }) => {
       });
     });
   }
-  console.log("temq=", template);
+  // console.log("temq=", template);
   // const renderImage = ({ item, index }) => {
   //   return <EpisodeSliderImage data={item} />;
   // };
@@ -77,17 +86,20 @@ const SeriesDetail = ({ route, navigation }) => {
   if (isLoading === false) {
     gen = getGenres();
   }
+
+  const episodeHandler = () => {};
   useEffect(() => {
     navigation.setOptions({ title: seriesData.name });
     dispatch(getPlaydata());
     dispatch(getTrailerdata(seriesData.id));
     dispatch(getTvTrailerdata(seriesData.id));
     dispatch(getSeriesDetail(seriesData.id));
+    dispatch(getEpisodeDetail(seriesData.id, value));
     return () => {
       dispatch(resetTrailerId());
       dispatch(resetTvTrailerId());
     };
-  }, [dispatch]);
+  }, [dispatch, value]);
 
   return (
     <View>
@@ -150,7 +162,6 @@ const SeriesDetail = ({ route, navigation }) => {
                 items={template}
                 setOpen={setOpen}
                 setValue={setValue}
-                // setItems={setItems}
                 autoScroll={true}
                 dropDownDirection="AUTO"
                 style={{
@@ -169,11 +180,36 @@ const SeriesDetail = ({ route, navigation }) => {
                   backgroundColor: "grey",
                 }}
                 listMode="SCROLLVIEW"
+                onPress={episodeHandler}
               />
             </>
           ) : (
             <Text>Loading...</Text>
           )}
+        </View>
+        <View style={styles.episodeContainer}>
+          <Text>
+            {console.log(
+              "astra",
+              episodes?.filter((e) => e.overview !== "").length
+            )}
+
+            {episodes
+              ?.filter((e) => e.overview !== "")
+              .map((ele, i) => (
+                <View key={i}>
+                  <Button mode="contained" style={{ margin: 4 }}>
+                    {i + 1}:{ele.name}
+                  </Button>
+                </View>
+              ))}
+          </Text>
+          {/* <Button
+            mode="contained"
+            style={{ margin: 10, width: windowWidth / 4, maxWidth: "100%" }}
+          >
+            Ep 1
+          </Button> */}
         </View>
       </ScrollView>
     </View>
@@ -223,5 +259,13 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderColor: "red",
     borderWidth: 2,
+  },
+  episodeContainer: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    alignContent: "flex-start",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });
