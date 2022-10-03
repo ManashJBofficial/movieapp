@@ -1,25 +1,26 @@
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import Home from "../screens/Home";
-import MovieDetail from "../screens/MovieDetail";
-import SeriesDetail from "../screens/SeriesDetail";
-import PlayScreen from "../screens/PlayScreen";
-import NoConnectionScreen from "../screens/NoConnectionScreen";
-import { useDispatch, useSelector } from "react-redux";
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from '../screens/Home';
+import MovieDetail from '../screens/MovieDetail';
+import SeriesDetail from '../screens/SeriesDetail';
+import PlayScreen from '../screens/PlayScreen';
+import PlayEpisode from '../screens/PlayEpisode';
+import NoConnectionScreen from '../screens/NoConnectionScreen';
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="MovieDetail" component={MovieDetail} />
-      <Stack.Screen name="SeriesDetail" component={SeriesDetail} />
-      <Stack.Screen name="PlayScreen" component={PlayScreen} />
-      <Stack.Screen name="NoConnectionScreen" component={NoConnectionScreen} />
-    </Stack.Navigator>
-  );
+	return (
+		<Stack.Navigator screenOptions={{ headerShown: true }}>
+			<Stack.Screen name="Home" component={Home} />
+			<Stack.Screen name="MovieDetail" component={MovieDetail} />
+			<Stack.Screen name="SeriesDetail" component={SeriesDetail} />
+			<Stack.Screen name="PlayScreen" component={PlayScreen} />
+			<Stack.Screen name="PlayEpisode" component={PlayEpisode} />
+			<Stack.Screen name="NoConnectionScreen" component={NoConnectionScreen} />
+		</Stack.Navigator>
+	);
 };
 
 export default StackNavigator;

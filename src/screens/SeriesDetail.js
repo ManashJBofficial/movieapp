@@ -28,7 +28,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 const SeriesDetail = ({ route, navigation }) => {
   const { seriesData } = route.params;
-  // console.log("data==", seriesData.id);
+  console.log("data==", seriesData.id);
   const dispatch = useDispatch();
 
   const trailerDetails = useSelector((state) => state.rootReducer.trailers);
@@ -198,7 +198,17 @@ const SeriesDetail = ({ route, navigation }) => {
               ?.filter((e) => e.overview !== "")
               .map((ele, i) => (
                 <View key={i}>
-                  <Button mode="contained" style={{ margin: 4 }}>
+                  <Button
+                    mode="contained"
+                    style={{ margin: 4 }}
+                    onPress={() => {
+                      navigation.navigate("PlayEpisode", {
+                        seriesId: seriesData.id,
+                        seasonNo: value,
+                        episodeNo: i + 1,
+                      });
+                    }}
+                  >
                     {i + 1}:{ele.name}
                   </Button>
                 </View>

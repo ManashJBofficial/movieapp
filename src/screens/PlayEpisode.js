@@ -5,19 +5,18 @@ import { getPlaydata } from "../redux/action/playAction";
 import { WebView } from "react-native-webview";
 import { windowWidth, windowHeight } from "../utils/dimensions";
 
-const PlayScreen = ({ route, navigation }) => {
-  const { movieId } = route.params;
+const PlayEpisode = ({ route, navigation }) => {
+  const { seriesId, seasonNo, episodeNo } = route.params;
   const dispatch = useDispatch();
 
-  const playDetails = useSelector((state) => state.rootReducer.playData);
+  //   const playDetails = useSelector((state) => state.rootReducer.playData);
   // const moviedata = useSelector((state) => state.rootReducer.movies);
-  const { play } = playDetails;
+  //   const { play } = playDetails;
   // console.log("play->", play);
   // console.log("moviedata->", moviedata.movies);
   useEffect(() => {
-    dispatch(getPlaydata(movieId));
+    // dispatch(getPlaydata(movieId));
   }, [dispatch]);
-  console.log("movieId", movieId);
   const jsCode = `window.open = undefined`;
   return (
     <View>
@@ -32,15 +31,15 @@ const PlayScreen = ({ route, navigation }) => {
       >
         <WebView
           source={{
-            uri: `https://v2.vidsrc.me/embed/${movieId}`,
+            uri: `https://v2.vidsrc.me/embed/${seriesId}/${seasonNo}-${episodeNo}/`,
           }}
-          startInLoadingState={true}
+          startInLoadingState={false}
           javaScriptEnabled={true}
           javaScriptCanOpenWindowsAutomatically={false}
           injectedJavaScript={jsCode}
           allowsFullscreenVideo={true}
-          minimumFontSize={10}
           setBuiltInZoomControls={false}
+          minimumFontSize={10}
           onError={() => console.log("Something went wrong")}
         />
       </View>
@@ -51,7 +50,7 @@ const PlayScreen = ({ route, navigation }) => {
   );
 };
 
-export default PlayScreen;
+export default PlayEpisode;
 
 const styles = StyleSheet.create({
   title: {
