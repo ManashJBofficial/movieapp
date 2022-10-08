@@ -10,12 +10,11 @@ const SearchBar = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const onChangeSearch = (query) => setSearchQuery(query);
-  console.log(searchQuery);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(searchTextAction(searchQuery));
-  });
+    dispatch(searchTextAction(searchQuery.toString().trim()));
+  }, [searchQuery]);
 
   return (
     <View style={{ width: windowWidth - 90 }}>
