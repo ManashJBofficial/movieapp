@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSearchResult } from "../redux/action/searchQueryAction";
+import {
+  getSearchResult,
+  resetSearchQuery,
+} from "../redux/action/searchQueryAction";
 import {
   ActivityIndicator,
   Avatar,
@@ -28,8 +31,8 @@ const SearchScreen = () => {
 
   console.log("isSearchResultLoading->", isSearchResultLoading);
   let poster_arr = results
-    ?.slice(0, 10)
-    .map((data) => data.poster_path)
+    ?.slice(0, 15)
+    .map((data, i) => data.poster_path)
     .filter((ele) => {
       return ele !== undefined && ele !== null;
     });
@@ -38,8 +41,11 @@ const SearchScreen = () => {
       if (searchInput && searchInput.length > 2) {
         dispatch(getSearchResult(searchInput));
       }
-    }, 800);
-    return () => clearTimeout(sendSearchRequest);
+    }, 600);
+    return () => {
+      clearTimeout(sendSearchRequest);
+      // dispatch(resetSearchQuery());
+    };
   }, [dispatch, searchInput]);
 
   return (
@@ -48,15 +54,25 @@ const SearchScreen = () => {
         {isSearchResultLoading === true ? (
           <ActivityIndicator animating={true} color="red" size="large" />
         ) : (
-          <View>
-            <Text>Results</Text>
-            {poster_arr?.map((data) => {
+          <View style={{ flex: 1, flexWrap: "wrap", flexDirection: "row" }}>
+            {poster_arr?.map((data, i) => {
               return (
-                <Card>
+                <Card
+                  key={i}
+                  mode="contained"
+                  elevation={5}
+                  style={{
+                    width: 126,
+                    height: 200,
+                    borderWidth: 0,
+                    margin: 2,
+                  }}
+                >
                   <Card.Cover
                     source={{
                       uri: "https://image.tmdb.org/t/p/w500" + data || [],
                     }}
+                    style={{ width: "100%", height: "100%" }}
                   />
                 </Card>
               );

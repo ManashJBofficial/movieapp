@@ -3,6 +3,7 @@ import {
   SEARCH_QUERY_FETCH_REQUEST,
   SEARCH_QUERY_FETCH_SUCCESS,
   SEARCH_QUERY_FETCH_FAILED,
+  SEARCH_QUERY_FETCH_RESET,
 } from "../../utils/constant";
 
 export const getSearchResult = (searchInput) => async (dispatch) => {
@@ -30,4 +31,8 @@ export const getSearchResult = (searchInput) => async (dispatch) => {
           : error.message,
     });
   }
+};
+
+export const resetSearchQuery = () => async (dispatch) => {
+  dispatch({ type: SEARCH_QUERY_FETCH_RESET });
 };

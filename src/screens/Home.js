@@ -73,21 +73,6 @@ const Home = ({ navigation }) => {
               />
             )}
           </View>
-          <View>
-            <Text style={styles.headText}>Trending Series</Text>
-            {series?.results == undefined ? (
-              <Text>Loading...</Text>
-            ) : (
-              <Carousel
-                // ref={isCarousel}
-                data={series?.results}
-                renderItem={renderImage}
-                sliderWidth={windowWidth - 10}
-                itemWidth={300}
-                loop={true}
-              />
-            )}
-          </View>
         </View>
       </ScrollView>
       <View
