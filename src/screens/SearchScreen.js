@@ -54,25 +54,20 @@ const SearchScreen = () => {
         {isSearchResultLoading === true ? (
           <ActivityIndicator animating={true} color="red" size="large" />
         ) : (
-          <View style={{ flex: 1, flexWrap: "wrap", flexDirection: "row" }}>
+          <View style={styles.cardContainer}>
             {poster_arr?.map((data, i) => {
               return (
                 <Card
                   key={i}
                   mode="contained"
                   elevation={5}
-                  style={{
-                    width: 126,
-                    height: 200,
-                    borderWidth: 0,
-                    margin: 2,
-                  }}
+                  style={styles.card}
                 >
                   <Card.Cover
                     source={{
                       uri: "https://image.tmdb.org/t/p/w500" + data || [],
                     }}
-                    style={{ width: "100%", height: "100%" }}
+                    style={styles.cardCover}
                   />
                 </Card>
               );
@@ -91,5 +86,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  cardContainer: {
+    flex: 1,
+    flexWrap: "wrap",
+    flexDirection: "row",
+  },
+  card: {
+    width: 126,
+    height: 200,
+    borderWidth: 0,
+    margin: 2,
+  },
+  cardCover: {
+    width: "100%",
+    height: "100%",
   },
 });
