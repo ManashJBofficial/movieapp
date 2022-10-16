@@ -14,8 +14,10 @@ import {
   Paragraph,
 } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const searchText = useSelector((state) => state.rootReducer.searchTextInput);
   const { searchInput } = searchText;
@@ -30,12 +32,7 @@ const SearchScreen = () => {
   } = searchResult;
 
   console.log("isSearchResultLoading->", isSearchResultLoading);
-  let poster_arr = results
-    ?.slice(0, 15)
-    .map((data, i) => data.poster_path)
-    .filter((ele) => {
-      return ele !== undefined && ele !== null;
-    });
+
   useEffect(() => {
     const sendSearchRequest = setTimeout(() => {
       if (searchInput && searchInput.length > 2) {
@@ -55,23 +52,41 @@ const SearchScreen = () => {
           <ActivityIndicator animating={true} color="red" size="large" />
         ) : (
           <View style={styles.cardContainer}>
-            {poster_arr?.map((data, i) => {
-              return (
-                <Card
-                  key={i}
-                  mode="contained"
-                  elevation={5}
-                  style={styles.card}
-                >
-                  <Card.Cover
-                    source={{
-                      uri: "https://image.tmdb.org/t/p/w500" + data || [],
+            {results
+              ?.filter((e) => {
+                return e.poster_path !== undefined && e.poster_path !== null;
+              })
+              .map((data, i) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      data?.media_type === "movie"
+                        ? navigation.navigate("MovieDetail", {
+                            movieData: data,
+                          })
+                        : navigation.navigate("SeriesDetail", {
+                            seriesData: data,
+                          });
                     }}
-                    style={styles.cardCover}
-                  />
-                </Card>
-              );
-            })}
+                  >
+                    <Card
+                      key={i}
+                      mode="contained"
+                      elevation={5}
+                      style={styles.card}
+                    >
+                      <Card.Cover
+                        source={{
+                          uri:
+                            "https://image.tmdb.org/t/p/w500" +
+                              data?.poster_path || [],
+                        }}
+                        style={styles.cardCover}
+                      />
+                    </Card>
+                  </TouchableOpacity>
+                );
+              })}
           </View>
         )}
       </View>
