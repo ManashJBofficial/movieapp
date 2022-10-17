@@ -24,14 +24,13 @@ const SearchScreen = ({ navigation }) => {
   console.log("searchInput->", searchInput);
 
   const searchResult = useSelector(
-    (state) => state.rootReducer.searchResultReducer
+    (state) => state.rootReducer?.searchResultReducer
   );
-  const {
-    isSearchResultLoading,
-    searchResult: { results },
-  } = searchResult;
 
-  console.log("isSearchResultLoading->", isSearchResultLoading);
+  // const {
+  //   isSearchResultLoading,
+  //   searchResult: { results },
+  // } = searchResult;
 
   useEffect(() => {
     const sendSearchRequest = setTimeout(() => {
@@ -41,22 +40,22 @@ const SearchScreen = ({ navigation }) => {
     }, 600);
     return () => {
       clearTimeout(sendSearchRequest);
-      // dispatch(resetSearchQuery());
+      dispatch(resetSearchQuery());
     };
   }, [dispatch, searchInput]);
 
   return (
     <ScrollView>
       <View>
-        {isSearchResultLoading === true ? (
+        {searchResult?.isSearchResultLoading === true ? (
           <ActivityIndicator animating={true} color="red" size="large" />
         ) : (
           <View style={styles.cardContainer}>
-            {results
+            {searchResult?.searchResult?.results
               ?.filter((e) => {
                 return e.poster_path !== undefined && e.poster_path !== null;
               })
-              .map((data, i) => {
+              ?.map((data, i) => {
                 return (
                   <TouchableOpacity
                     onPress={() => {
@@ -70,12 +69,13 @@ const SearchScreen = ({ navigation }) => {
                     }}
                   >
                     <Card
-                      key={i}
+                      key={data.id}
                       mode="contained"
                       elevation={5}
                       style={styles.card}
                     >
                       <Card.Cover
+                        key={data.id}
                         source={{
                           uri:
                             "https://image.tmdb.org/t/p/w500" +
