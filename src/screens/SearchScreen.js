@@ -16,6 +16,8 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { windowHeight } from "../utils/dimensions";
+
 
 const SearchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -46,12 +48,14 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <View>
+      <View style={styles.container}>
         {searchResult?.isSearchResultLoading === true ? (
           <ActivityIndicator animating={true} color="red" size="large" />
         ) : (
           <View style={styles.cardContainer}>
-            {searchResult?.searchResult?.results
+            {
+              searchResult.length >0 ? (
+                searchResult?.searchResult?.results
               ?.filter((e) => {
                 return e.poster_path !== undefined && e.poster_path !== null;
               })
@@ -86,7 +90,13 @@ const SearchScreen = ({ navigation }) => {
                     </Card>
                   </TouchableOpacity>
                 );
-              })}
+              })
+              ) : (
+                <View>
+                  <Text style={{ fontSize: 20,lineHeight:windowHeight-100,}}> No results found ! Search Again</Text>
+                </View>
+              ) 
+            }
           </View>
         )}
       </View>
@@ -117,4 +127,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+
 });

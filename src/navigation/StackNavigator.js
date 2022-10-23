@@ -9,12 +9,14 @@ import PlayEpisode from "../screens/PlayEpisode";
 import SearchScreen from "../screens/SearchScreen";
 import SearchBar from "../components/SearchBar";
 import NoConnectionScreen from "../screens/NoConnectionScreen";
+import { useColorScheme } from 'react-native';
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
+  let colorScheme = useColorScheme();
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
+    <Stack.Navigator screenOptions={{ headerShown: true ,headerTintColor: colorScheme ==="dark" ? "white" : "black"}}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="MovieDetail" component={MovieDetail} />
       <Stack.Screen name="SeriesDetail" component={SeriesDetail} />
