@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet} from "react-native";
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/Home";
@@ -17,7 +17,7 @@ const StackNavigator = () => {
   let colorScheme = useColorScheme();
   return (
     <Stack.Navigator screenOptions={{ headerShown: true ,headerTintColor: colorScheme ==="dark" ? "white" : "black"}}>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="M Cinema" component={Home} />
       <Stack.Screen name="MovieDetail" component={MovieDetail} />
       <Stack.Screen name="SeriesDetail" component={SeriesDetail} />
       <Stack.Screen name="PlayScreen" component={PlayScreen} />

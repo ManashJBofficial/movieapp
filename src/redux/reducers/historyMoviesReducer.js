@@ -1,25 +1,25 @@
 import {
-    MOVIE_BY_GENRE_SUCCESS,
-    MOVIE_BY_GENRE_REQUEST,
-    MOVIE_BY_GENRE_FAILED,
+  HISTORY_MOVIE_SUCCESS,
+  HISTORY_MOVIE_REQUEST,
+  HISTORY_MOVIE_FAILED,
   } from "../../utils/constant";
   
-  const fetchMovieByGenreReducer = (state = { moviesByGenre: [] }, action) => {
+  const fetchHistoryMoviesReducer = (state = { historyMovies: [] }, action) => {
     const { type, payload } = action;
     switch (type) {
-      case MOVIE_BY_GENRE_REQUEST:
+      case HISTORY_MOVIE_REQUEST:
         return {
           ...state,
           isLoading: true,
-          moviesByGenre: [],
+          historyMovies: [],
         };
-      case MOVIE_BY_GENRE_SUCCESS:
+      case HISTORY_MOVIE_SUCCESS:
         return {
           ...state,
           isLoading: false,
-          moviesByGenre: payload,
+          historyMovies: payload,
         };
-      case MOVIE_BY_GENRE_FAILED:
+      case HISTORY_MOVIE_FAILED:
         return {
           ...state,
           isLoading: false,
@@ -30,5 +30,5 @@ import {
     }
   };
   
-  export default fetchMovieByGenreReducer;
+  export default fetchHistoryMoviesReducer;
   

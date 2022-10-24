@@ -6,7 +6,9 @@ import Carousel from "react-native-snap-carousel";
 import { windowHeight, windowWidth } from "../utils/dimensions";
 import { getApidata } from "../redux/action/movieAction";
 import { getSeriesdata } from "../redux/action/seriesAction";
-import { getMovieByGenre } from "../redux/action/moviesByGenreAction";
+import { getActionMovies } from "../redux/action/actionMoviesAction";
+import { getComedyMovies } from "../redux/action/comedyMoviesAction";
+import { getHistoryMovies } from "../redux/action/historyMoviesAction";
 import SliderImage from "../components/SliderImage";
 import { FAB } from "react-native-paper";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -22,7 +24,9 @@ const Home = ({ navigation }) => {
   const {
     movies: { isLoading, movies },
     series: { isSeriesLoading, series },
-    movieByGenreReducer:{moviesByGenre}
+    actionMoviesReducer:{actionMovies},
+    comedyMoviesReducer:{comedyMovies},
+    historyMoviesReducer:{historyMovies}
   } = movieDetails;
 
   // Subscribe
@@ -37,7 +41,10 @@ const Home = ({ navigation }) => {
     unsubscribe();
     dispatch(getApidata());
     dispatch(getSeriesdata());
-    dispatch(getMovieByGenre());
+    dispatch(getActionMovies(28));
+    dispatch(getComedyMovies(35));
+    dispatch(getHistoryMovies(36));
+    
   }, [dispatch]);
 
   const renderImage = ({ item, index }) => {
@@ -51,7 +58,7 @@ const Home = ({ navigation }) => {
         <View>
           <View>
             <Text style={styles.headText}>Trending Movies</Text>
-            <Text>colorScheme: {colorScheme}</Text>
+            {/* <Text>colorScheme: {colorScheme}</Text> */}
             {movies?.results == undefined ? (
               <Text>Loading...</Text>
             ) : (
@@ -82,12 +89,42 @@ const Home = ({ navigation }) => {
           </View>
           <View>
             <Text style={styles.headText}>Action Movies</Text>
-            {moviesByGenre?.results == undefined ? (
+            {actionMovies?.results == undefined ? (
               <Text>Loading...</Text>
             ) : (
               <Carousel
                 // ref={isCarousel}
-                data={moviesByGenre?.results.map(v => ({...v, media_type: "movie"}))}
+                data={actionMovies?.results.map(v => ({...v, media_type: "movie"}))}
+                renderItem={renderImage}
+                sliderWidth={windowWidth - 10}
+                itemWidth={300}
+                loop={true}
+              />
+            )}
+          </View>
+          <View>
+            <Text style={styles.headText}>Comedy Movies</Text>
+            {comedyMovies?.results == undefined ? (
+              <Text>Loading...</Text>
+            ) : (
+              <Carousel
+                // ref={isCarousel}
+                data={comedyMovies?.results.map(v => ({...v, media_type: "movie"}))}
+                renderItem={renderImage}
+                sliderWidth={windowWidth - 10}
+                itemWidth={300}
+                loop={true}
+              />
+            )}
+          </View>
+          <View>
+            <Text style={styles.headText}>Historical Movies</Text>
+            {historyMovies?.results == undefined ? (
+              <Text>Loading...</Text>
+            ) : (
+              <Carousel
+                // ref={isCarousel}
+                data={historyMovies?.results.map(v => ({...v, media_type: "movie"}))}
                 renderItem={renderImage}
                 sliderWidth={windowWidth - 10}
                 itemWidth={300}
