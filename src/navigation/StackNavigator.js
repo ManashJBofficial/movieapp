@@ -7,6 +7,7 @@ import SeriesDetail from "../screens/SeriesDetail";
 import PlayScreen from "../screens/PlayScreen";
 import PlayEpisode from "../screens/PlayEpisode";
 import SearchScreen from "../screens/SearchScreen";
+import SimilarMovieScreen from "../screens/SimilarMovieScreen";
 import SearchBar from "../components/SearchBar";
 import NoConnectionScreen from "../screens/NoConnectionScreen";
 import { useColorScheme } from 'react-native';
@@ -22,11 +23,13 @@ const StackNavigator = () => {
       <Stack.Screen name="SeriesDetail" component={SeriesDetail} />
       <Stack.Screen name="PlayScreen" component={PlayScreen} />
       <Stack.Screen name="PlayEpisode" component={PlayEpisode} />
+      <Stack.Screen name="SimilarMovieScreen" component={SimilarMovieScreen} />
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
         options={{ headerTitle: (props) => <SearchBar {...props} /> }}
       />
+      
       <Stack.Screen name="NoConnectionScreen" component={NoConnectionScreen} />
     </Stack.Navigator>
   );

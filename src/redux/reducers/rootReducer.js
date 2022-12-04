@@ -11,6 +11,8 @@ import fetchSearchResultReducer from "./searchQueryReducer";
 import fetchActionMoviesReducer from "./actionMoviesReducer";
 import fetchComedyMoviesReducer from "./comedyMoviesReducer";
 import fetchHistoryMoviesReducer from "./historyMoviesReducer";
+import fetchSimilarMovieReducer from "./similarMoviesReducer";
+import fetchSimilarTvReducer from "./similarTvReducer";
 
 const rootReducer = combineReducers({
   movies: fetchMovieReducer,
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
   actionMoviesReducer:fetchActionMoviesReducer,
   comedyMoviesReducer:fetchComedyMoviesReducer,
   historyMoviesReducer:fetchHistoryMoviesReducer,
+  similarMovieReducer:fetchSimilarMovieReducer,
+  similarTvReducer:fetchSimilarTvReducer,
 });
 
 export default rootReducer;

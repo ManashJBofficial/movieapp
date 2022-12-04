@@ -20,6 +20,9 @@ import { getPlaydata } from "../redux/action/playAction";
 import { getSeriesDetail } from "../redux/action/seriesDetailAction";
 import { Chip, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/Foundation";
+import SliderImage from "../components/SliderImage";
+import { getSimilarMoviesData } from "../redux/action/similarMoviesAction";
+import Carousel from "react-native-snap-carousel";
 
 const MovieDetail = ({ route, navigation }) => {
   const { movieData } = route.params;
@@ -42,6 +45,14 @@ const MovieDetail = ({ route, navigation }) => {
   if (isLoading === false) {
     gen = getGenres();
   }
+  const similarMovieDetails = useSelector((state) => state.rootReducer.similarMovieReducer);
+
+  const {similarMovies } = similarMovieDetails
+
+  const RenderImage = ({ item }) => {
+    return <SliderImage data={item}/>;
+  };
+
   useEffect(() => {
     navigation.setOptions({ title: movieData.title });
 
@@ -49,6 +60,7 @@ const MovieDetail = ({ route, navigation }) => {
     dispatch(getTrailerdata(movieData.id));
     dispatch(getTvTrailerdata(movieData.id));
     dispatch(getSeriesDetail(movieData.id));
+    dispatch(getSimilarMoviesData(movieData.id))
     return () => {
       dispatch(resetTrailerId());
       dispatch(resetTvTrailerId());
@@ -98,19 +110,39 @@ const MovieDetail = ({ route, navigation }) => {
             : null}
         </Text>
 
-        <Text style={styles.subtitle}>{movieData.overview}</Text>
+        <View >
+          <Text style={styles.subtitle}>
+            {movieData.overview}
+          </Text>
+        </View>
         <View style={styles.btnContainer}>
           <Button
             icon="play-circle"
             mode="contained"
             onPress={() => {
-              navigation.navigate("PlayScreen", { movieId: movieData.id });
+              navigation.navigate("PlayScreen", { movieId: movieData.id, movieName: movieData.title });
             }}
             color="tomato"
           >
             Watch Now
           </Button>
         </View>
+
+        <View>
+        <Text style={styles.title}>More like this</Text>
+            {similarMovies?.results == undefined ? (
+              <Text>Loading...</Text>
+            ) : (
+              <Carousel
+                // ref={isCarousel}
+                data={similarMovies?.results.map(v => ({...v, media_type: "similar_movie"}))}
+                renderItem={RenderImage}
+                sliderWidth={windowWidth - 10}
+                itemWidth={300}
+                loop={true}
+              />
+            )}
+          </View>
       </View>
     </ScrollView>
   );

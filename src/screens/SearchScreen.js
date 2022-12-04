@@ -54,7 +54,6 @@ const SearchScreen = ({ navigation }) => {
         ) : (
           <View style={styles.cardContainer}>
             {
-              searchResult.length >0 ? (
                 searchResult?.searchResult?.results
               ?.filter((e) => {
                 return e.poster_path !== undefined && e.poster_path !== null;
@@ -73,7 +72,7 @@ const SearchScreen = ({ navigation }) => {
                     }}
                   >
                     <Card
-                      key={data.id}
+                      key={i}
                       mode="contained"
                       elevation={5}
                       style={styles.card}
@@ -91,11 +90,6 @@ const SearchScreen = ({ navigation }) => {
                   </TouchableOpacity>
                 );
               })
-              ) : (
-                <View>
-                  <Text style={{ fontSize: 20,lineHeight:windowHeight-100,}}> No results found ! Search Again</Text>
-                </View>
-              ) 
             }
           </View>
         )}

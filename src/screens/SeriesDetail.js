@@ -25,6 +25,7 @@ import Icon from "react-native-vector-icons/Foundation";
 import Carousel from "react-native-snap-carousel";
 import EpisodeSliderImage from "../components/EpisodeSliderImage";
 import DropDownPicker from "react-native-dropdown-picker";
+import SliderImage from "../components/SliderImage";
 
 const SeriesDetail = ({ route, navigation }) => {
   const { seriesData } = route.params;
@@ -72,9 +73,6 @@ const SeriesDetail = ({ route, navigation }) => {
     });
   }
   // console.log("temq=", template);
-  // const renderImage = ({ item, index }) => {
-  //   return <EpisodeSliderImage data={item} />;
-  // };
 
   var gen;
   const getGenres = () => {
@@ -86,7 +84,11 @@ const SeriesDetail = ({ route, navigation }) => {
   if (isLoading === false) {
     gen = getGenres();
   }
+console.log("seriesData",seriesData.id)
 
+const renderImage = ({ item, index }) => {
+  return <SliderImage data={item} />;
+};
   const episodeHandler = () => {};
   useEffect(() => {
     navigation.setOptions({ title: seriesData.name });
@@ -189,37 +191,29 @@ const SeriesDetail = ({ route, navigation }) => {
         </View>
         <View style={styles.episodeContainer}>
           <Text>
-            {console.log(
-              "astra",
-              episodes?.filter((e) => e.overview !== "").length
-            )}
-
             {episodes
               ?.filter((e) => e.overview !== "")
               .map((ele, i) => (
                 <View key={i}>
                   <Button
                     mode="contained"
+                    color="tomato"
                     style={{ margin: 4 }}
                     onPress={() => {
                       navigation.navigate("PlayEpisode", {
                         seriesId: seriesData.id,
                         seasonNo: value,
                         episodeNo: i + 1,
+                        seriesName: seriesData.name
                       });
                     }}
                   >
                     {i + 1}:{ele.name}
                   </Button>
+                  
                 </View>
               ))}
           </Text>
-          {/* <Button
-            mode="contained"
-            style={{ margin: 10, width: windowWidth / 4, maxWidth: "100%" }}
-          >
-            Ep 1
-          </Button> */}
         </View>
       </ScrollView>
     </View>

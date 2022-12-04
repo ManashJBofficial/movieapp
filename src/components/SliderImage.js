@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { StyleSheet, Text, View, Image, Button,Alert } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -9,14 +9,33 @@ const SliderImage = ({ data }) => {
   return (
     <View>
       <TouchableOpacity
-        onPress={() =>
-          data.media_type === "movie"
-            ? navigation.navigate("MovieDetail", {
+        onPress={() =>{
+          switch (data.media_type) {
+              case "movie":
+                navigation.navigate("MovieDetail", {
                 movieData: data,
               })
-            : navigation.navigate("SeriesDetail", {
+                break;
+              case 'series':
+                navigation.navigate("SeriesDetail", {
                 seriesData: data,
               })
+                break;
+              // case 'similar_movie':
+              //   navigation.navigate("SimilarMovieScreen")
+              //   break;
+              default:
+                break;
+            }
+        }
+          // data.media_type === "movie"
+          // //   ? navigation.navigate("MovieDetail", {
+          //       movieData: data,
+          //     })
+          //   : navigation.navigate("SeriesDetail", {
+          //       seriesData: data,
+          //     })
+              
         }
       >
         <Image

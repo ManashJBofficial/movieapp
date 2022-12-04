@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView,Button } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import Carousel from "react-native-snap-carousel";
@@ -10,11 +10,13 @@ import { getActionMovies } from "../redux/action/actionMoviesAction";
 import { getComedyMovies } from "../redux/action/comedyMoviesAction";
 import { getHistoryMovies } from "../redux/action/historyMoviesAction";
 import SliderImage from "../components/SliderImage";
+import TopSliderImage from "../components/TopSliderImage";
 import { FAB } from "react-native-paper";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useColorScheme } from 'react-native';
 
 const Home = ({ navigation }) => {
+  
   let colorScheme = useColorScheme();
   
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const Home = ({ navigation }) => {
       navigation.navigate("NoConnectionScreen");
     }
   });
+
   useEffect(() => {
     unsubscribe();
     dispatch(getApidata());
@@ -50,6 +53,9 @@ const Home = ({ navigation }) => {
   const renderImage = ({ item, index }) => {
     return <SliderImage data={item} />;
   };
+  const topRenderImage = ({ item, index }) => {
+    return <TopSliderImage data={item} />;
+  };
   // const isCarousel = React.useRef(null);
   
   return (
@@ -57,7 +63,8 @@ const Home = ({ navigation }) => {
       <ScrollView>
         <View>
           <View>
-            <Text style={styles.headText}>Trending Movies</Text>
+          {/* <Button title="crash" onPress={()=>{throw new Error("sentry error")}}/> */}
+            {/* <Text style={styles.headText}>Trending Movies</Text> */}
             {/* <Text>colorScheme: {colorScheme}</Text> */}
             {movies?.results == undefined ? (
               <Text>Loading...</Text>
@@ -65,7 +72,7 @@ const Home = ({ navigation }) => {
               <Carousel
                 // ref={isCarousel}
                 data={movies?.results}
-                renderItem={renderImage}
+                renderItem={topRenderImage}
                 sliderWidth={windowWidth - 10}
                 itemWidth={300}
                 loop={true}
@@ -79,11 +86,11 @@ const Home = ({ navigation }) => {
             ) : (
               <Carousel
                 // ref={isCarousel}
-                data={series?.results}
+                data={series?.results.map(v => ({...v, media_type: "series"}))}
                 renderItem={renderImage}
                 sliderWidth={windowWidth - 10}
                 itemWidth={300}
-                loop={true}
+                loop={false}
               />
             )}
           </View>
@@ -98,7 +105,7 @@ const Home = ({ navigation }) => {
                 renderItem={renderImage}
                 sliderWidth={windowWidth - 10}
                 itemWidth={300}
-                loop={true}
+                loop={false}
               />
             )}
           </View>
@@ -113,7 +120,7 @@ const Home = ({ navigation }) => {
                 renderItem={renderImage}
                 sliderWidth={windowWidth - 10}
                 itemWidth={300}
-                loop={true}
+                loop={false}
               />
             )}
           </View>
@@ -128,7 +135,7 @@ const Home = ({ navigation }) => {
                 renderItem={renderImage}
                 sliderWidth={windowWidth - 10}
                 itemWidth={300}
-                loop={true}
+                loop={false}
               />
             )}
           </View>

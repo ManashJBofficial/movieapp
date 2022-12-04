@@ -29,6 +29,21 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "sentry-expo"
+    ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "self",
+            "project": "movie",
+            "authToken": "4d1c03bcffd2433a9bf472238527331dd547d168007c45cf9054c41528a4106c"
+          }
+        }
+      ]
     }
   }
 }
