@@ -18,7 +18,7 @@ const StackNavigator = () => {
   let colorScheme = useColorScheme();
   return (
     <Stack.Navigator screenOptions={{ headerShown: true ,headerTintColor: colorScheme ==="dark" ? "white" : "black"}}>
-      <Stack.Screen name="M Cinema" component={Home} />
+      <Stack.Screen name="Ninja Movies" component={Home} />
       <Stack.Screen name="MovieDetail" component={MovieDetail} />
       <Stack.Screen name="SeriesDetail" component={SeriesDetail} />
       <Stack.Screen name="PlayScreen" component={PlayScreen} />
