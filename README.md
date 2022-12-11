@@ -1,4 +1,4 @@
-# Nija Movie Streaming Android App using React Native
+# Ninja Movie Streaming Android App using React Native
 
 ## Table of Contents
 
