@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiConfig from "../../config/apiConfig.js"
 import {
   SIMILAR_MOVIE_FETCH_REQUEST,
   SIMILAR_MOVIE_FETCH_SUCCESS,
@@ -10,7 +11,7 @@ export const getSimilarMoviesData = (id) => async (dispatch) => {
     dispatch({ type: SIMILAR_MOVIE_FETCH_REQUEST });
 
     const { data } = await axios.get(
-      `https://api.themoviedb.org/3/movie/${id}/similar?api_key=d3942c0c75b4219ea9c62d5b34471101&language=en-US&page=1`,
+      `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiConfig.apiKey}&language=en-US&page=1`,
       {
         headers: { "Content-Type": "application/json" },
       }
