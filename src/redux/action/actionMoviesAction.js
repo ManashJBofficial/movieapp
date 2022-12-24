@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiConfig from "../../config/apiConfig.js"
 import {
   ACTION_MOVIE_SUCCESS,
   ACTION_MOVIE_REQUEST,
@@ -10,7 +11,7 @@ export const getActionMovies = (genreId) => async (dispatch) => {
     dispatch({ type: ACTION_MOVIE_REQUEST });
 
     const { data } = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=d3942c0c75b4219ea9c62d5b34471101&with_genres=${genreId}`,
+      `https://api.themoviedb.org/3/discover/movie?api_key=${apiConfig.apiKey}&with_genres=${genreId}`,
       {
         headers: { "Content-Type": "application/json" },
       }

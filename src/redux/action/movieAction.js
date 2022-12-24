@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiConfig from "../../config/apiConfig.js"
 import {
   MOVIE_FETCH_REQUEST,
   MOVIE_FETCH_SUCCESS,
@@ -10,7 +11,7 @@ export const getApidata = (id) => async (dispatch) => {
     dispatch({ type: MOVIE_FETCH_REQUEST });
 
     const { data } = await axios.get(
-      `https://api.themoviedb.org/3/trending/movie/week?api_key=d3942c0c75b4219ea9c62d5b34471101&page=1`,
+      `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiConfig.apiKey}&page=1`,
       {
         headers: { "Content-Type": "application/json" },
       }

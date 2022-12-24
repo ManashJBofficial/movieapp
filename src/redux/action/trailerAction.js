@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiConfig from "../../config/apiConfig.js"
 import {
   TRAILER_FETCH_SUCCESS,
   TRAILER_FETCH_REQUEST,
@@ -22,7 +23,7 @@ export const getTrailerdata = (movieId) => async (dispatch) => {
     dispatch({ type: TRAILER_FETCH_REQUEST });
 
     const { data } = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=d3942c0c75b4219ea9c62d5b34471101&language=en-US`,
+      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiConfig.apiKey}&language=en-US`,
       {
         headers: { "Content-Type": "application/json" },
         maxContentLength: 100000000,

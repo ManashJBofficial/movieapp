@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiConfig from "../../config/apiConfig.js"
 import {
   SERIES_DETAILS_FETCH_REQUEST,
   SERIES_DETAILS_FETCH_SUCCESS,
@@ -10,7 +11,7 @@ export const getSeriesDetail = (id) => async (dispatch) => {
     dispatch({ type: SERIES_DETAILS_FETCH_REQUEST });
 
     const { data } = await axios.get(
-      `https://api.themoviedb.org/3/tv/${id}?api_key=d3942c0c75b4219ea9c62d5b34471101&language=en-US`,
+      `https://api.themoviedb.org/3/tv/${id}?api_key=${apiConfig.apiKey}&language=en-US`,
       {
         headers: { "Content-Type": "application/json" },
       }
